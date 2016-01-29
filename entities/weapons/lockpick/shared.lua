@@ -103,9 +103,10 @@ function SWEP:PrimaryAttack()
 
     local onFail = function(ply) if ply == self:GetOwner() then hook.Call("onLockpickCompleted", nil, ply, false, ent) end end
 
-    -- Lockpick fails when dying or disconnecting
+    -- Lockpick fails when dying, disconnecting or switching weapons
     hook.Add("PlayerDeath", self, fc{onFail, fn.Flip(fn.Const)})
     hook.Add("PlayerDisconnected", self, fc{onFail, fn.Flip(fn.Const)})
+    hook.Add("PlayerSwitchWeapon", self, fc{onFail, fn.Flip(fn.Const)})
     -- Remove hooks when finished
     hook.Add("onLockpickCompleted", self, fc{fp{hook.Remove, "PlayerDisconnected", self}, fp{hook.Remove, "PlayerDeath", self}})
 end
